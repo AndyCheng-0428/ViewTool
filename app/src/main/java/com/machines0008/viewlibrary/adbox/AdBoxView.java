@@ -284,9 +284,7 @@ public class AdBoxView<T extends AdBoxVo> extends ConstraintLayout {
                         break;
                 }
                 if (null != onItemClickListener) {
-                    imageView.setOnClickListener((v)-> {
-                        onItemClickListener.onItemClick(v, adBoxVo);
-                    });
+                    imageView.setOnClickListener((v)-> onItemClickListener.onItemClick(v, adBoxVo));
                 }
 
                 container.addView(imageView);
