@@ -6,4 +6,9 @@
         <attr name="duration" format="integer"/>
         <attr name="autoPlay" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="WheelView">
+        <attr name="selected_text_color" format="color"/>
+        <attr name="unselected_text_color" format="color"/>
+    </declare-styleable>
 </resources>

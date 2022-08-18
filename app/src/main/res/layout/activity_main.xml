@@ -44,7 +44,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.25" />
 
-    <com.machines0008.viewlibrary.video.VideoView
+    <com.machines0008.viewlibrary.video.VideoLayout
         android:id="@+id/videoView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -52,5 +52,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <com.machines0008.viewlibrary.wheelview.WheelView
+        android:id="@+id/wheelView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/videoView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="org.apache.commons.lang3.StringUtils" />
+
+        <import type="android.graphics.Typeface" />
+
+        <import type="android.view.View" />
+
+        <import type="com.machines0008.viewlibrary.ViewAdapter" />
+
+        <import type="android.content.DialogInterface" />
+
+        <variable
+            name="params"
+            type="com.machines0008.viewlibrary.ios.DialogController.Params" />
+
+        <variable
+            name="dialog"
+            type="com.machines0008.viewlibrary.ios.CommonDialog" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@{params.titleMarginTop}"
+            android:layout_marginBottom="@{params.titleMarginBottom}"
+            android:gravity="center_horizontal"
+            android:text="@{params.title}"
+            android:textSize="@{params.titleTextSize}"
+            android:typeface="@{Typeface.DEFAULT_BOLD}"
+            android:visibility="@{StringUtils.isBlank(params.title) ? View.GONE : View.VISIBLE}" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@{params.messageMarginTop}"
+            android:layout_marginBottom="@{params.messageMarginBottom}"
+            android:gravity="center"
+            android:text="@{params.message}"
+            android:textSize="@{params.messageTextSize}"
+            android:visibility="@{StringUtils.isBlank(params.message) ? View.GONE : View.VISIBLE}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@{params.btnLineMinHeight}"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:foreground="@drawable/foreground"
+                android:gravity="center"
+                android:onClick="@{v -> params.negativeBtnListener.onClick(dialog, DialogInterface.BUTTON_NEGATIVE) + dialog.dismiss()}"
+                android:text="@{params.negativeBtnText}"
+                android:textSize="@{params.negativeTextSize}"
+                android:visibility="@{StringUtils.isBlank(params.negativeBtnText) ? View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:id="@+id/tvPositive"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:foreground="@drawable/foreground"
+                android:gravity="center"
+                android:onClick="@{v -> params.positiveBtnListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE) + dialog.dismiss()}"
+                android:text="@{params.positiveBtnText}"
+                android:textSize="@{params.positiveTextSize}"
+                android:visibility="@{StringUtils.isBlank(params.positiveBtnText) ? View.GONE : View.VISIBLE}" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

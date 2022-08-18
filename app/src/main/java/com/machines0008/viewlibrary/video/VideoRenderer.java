@@ -1,8 +1,10 @@
 package com.machines0008.viewlibrary.video;
 
 import android.graphics.SurfaceTexture;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -25,13 +27,12 @@ import javax.microedition.khronos.opengles.GL10;
 public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVideoSizeChangedListener {
     private static final String vertexShaderCode = "" +
             "attribute vec4 vPosition;" +
-            "attribute vec4 vCoordinate;" +
+            "attribute vec2 vCoordinate;" +
             "varying vec2 textureCoordinate;" +
-            "uniform mat4 uMatrix;" +
-            "uniform mat4 uSTMatrix;" +
+            "uniform mat4 vMatrix;" +
             "void main() {" +
-            "   textureCoordinate = (uSTMatrix * textureCoordinate).xy;" +
-            "   gl_Position = uMatrix * aPosition;" +
+            "   textureCoordinate = vCoordinate;" +
+            "   gl_Position = vMatrix * vPosition;" +
             "}";
     private static final String fragmentShaderCode = "" +
             "#extension GL_OES_EGL_image_external : require \r\n" +
@@ -45,16 +46,16 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
     private FloatBuffer fbVertex;
     private FloatBuffer fbTexture;
     private final float[] vertexPosition = {
-            1.0f, -1.0f, 0.0f,
-            -1.0f, -1.0f, 0.0f,
-            1.0f, 1.0f, 0.0f,
-            -1.0f, 1.0f, 0.0f
+            -1.0f, 1.0f,
+            1.0f, 1.0f,
+            -1.0f, -1.0f,
+            1.0f, -1.0f
     };
     private final float[] texturePosition = {
-            1.0f, 0.0f,
-            0.0f, 0.0f,
+            0.0f, 1.0f,
             1.0f, 1.0f,
-            0.0f, 1.0f
+            0.0f, 0.0f,
+            1.0f, 0.0f
     };
 
     private int screenWidth;
@@ -93,29 +94,23 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
         mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
         mediaPlayer.setSurface(surface);
         mediaPlayer.prepareAsync();
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                return false;
-            }
-        });
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         this.screenWidth = width;
         this.screenHeight = height;
-
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-        GLES20.glClearColor(1, 1, 1, 1);
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        if (null != surfaceTexture) {
+            surfaceTexture.updateTexImage();
+        }
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         int mHTexture = GLES20.glGetUniformLocation(program, "vTexture");
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, texture[0]);
         GLES20.glUniform1i(mHTexture, 0);
 
         int mHPosition = GLES20.glGetAttribLocation(program, "vPosition");
@@ -148,5 +143,7 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
         } else {
             Matrix.orthoM(matrix, 0, -screenRatio / videoRatio, screenRatio / videoRatio, -1f, 1f, -1f, 1f);
         }
+        Matrix.rotateM(matrix, 0, 180, 0, 0, 1); //上下顛倒
+        Matrix.scaleM(matrix, 0, -1, 1, 1); //水平反轉
     }
 }

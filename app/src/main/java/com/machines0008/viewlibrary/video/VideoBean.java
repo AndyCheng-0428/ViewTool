@@ -10,5 +10,5 @@ import lombok.Data;
  **/
 @Data
 public class VideoBean {
-    private String url = "https://youtu.be/Q1Pw81bDKEw";
+    private String url = "https://media.geeksforgeeks.org/wp-content/uploads/20201217192146/Screenrecorder-2020-12-17-19-17-36-828.mp4?_=1";
 }

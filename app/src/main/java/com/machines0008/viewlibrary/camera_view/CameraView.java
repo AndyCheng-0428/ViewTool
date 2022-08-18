@@ -57,6 +57,5 @@ public class CameraView extends GLSurfaceView implements GLSurfaceView.Renderer 
     @Override
     public void onResume() {
         super.onResume();
-        cameraRender.onResume();
     }
 }

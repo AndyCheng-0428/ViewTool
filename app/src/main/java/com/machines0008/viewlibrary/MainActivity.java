@@ -1,16 +1,20 @@
 package com.machines0008.viewlibrary;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.machines0008.viewlibrary.test.AdBoxBean;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.machines0008.viewlibrary.adbox.AdBoxView;
+import com.machines0008.viewlibrary.ios.CommonDialog;
+import com.machines0008.viewlibrary.test.AdBoxBean;
+import com.machines0008.viewlibrary.test.WheelBean;
+import com.machines0008.viewlibrary.wheelview.WheelView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,37 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         initView();
+        initWheel();
+    }
+
+    private void initWheel() {
+        WheelView<WheelBean> wheelView = findViewById(R.id.wheelView);
+        List<WheelBean> wheelBeans = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+
+            WheelBean bean = new WheelBean();
+            bean.setName(String.valueOf(i));
+            wheelBeans.add(bean);
+        }
+        wheelView.setDataList(wheelBeans, null);
+
+        new CommonDialog.Builder(this)
+                .setTitle("你好啊")
+                .setMessage("這是測試待而露格!")
+                .setPositiveBtnClickListener(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeBtnClickListener(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .build()
+                .show();
     }
 
     private void initView() {
