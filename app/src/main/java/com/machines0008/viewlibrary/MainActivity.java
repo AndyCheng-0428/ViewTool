@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private AdBoxView<AdBoxBean> adBox;
 
     @Override
@@ -54,13 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                })
-                .setNegativeBtnClickListener(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                }).isDatePickerDialog()
 
-                    }
-                })
                 .build()
                 .show();
     }

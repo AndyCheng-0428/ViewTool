@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AdBoxView">
-        <attr name="selected_color" format="color"/>
-        <attr name="unselected_color" format="color"/>
-        <attr name="duration" format="integer"/>
-        <attr name="autoPlay" format="boolean"/>
+        <attr name="selected_color" format="color" />
+        <attr name="unselected_color" format="color" />
+        <attr name="duration" format="integer" />
+        <attr name="autoPlay" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="WheelView">
-        <attr name="selected_text_color" format="color"/>
-        <attr name="unselected_text_color" format="color"/>
+        <attr name="selected_text_color" format="color" />
+        <attr name="unselected_text_color" format="color" />
     </declare-styleable>
 </resources>

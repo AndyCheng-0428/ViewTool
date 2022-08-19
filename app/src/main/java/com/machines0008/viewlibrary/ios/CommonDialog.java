@@ -3,7 +3,9 @@ package com.machines0008.viewlibrary.ios;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Window;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -11,6 +13,9 @@ import androidx.annotation.StringRes;
 
 import com.machines0008.viewlibrary.R;
 import com.machines0008.viewlibrary.databinding.DialogBinding;
+import com.machines0008.viewlibrary.databinding.DialogDatePickerBinding;
+
+import java.util.Calendar;
 
 /**
  * Project Name: ViewLibrary
@@ -136,15 +141,38 @@ public class CommonDialog extends AlertDialog {
             return this;
         }
 
+        public Builder setDatePickerStart(Calendar startCalendar, Calendar endCalendar) {
+            P.setStartTime(startCalendar);
+            P.setEndTime(endCalendar);
+            return this;
+        }
+
+        public Builder isDatePickerDialog() {
+            P.setDatePickerDialog(true);
+            return this;
+        }
+
         public CommonDialog build() {
             CommonDialog dialog = new CommonDialog(context);
-            DialogBinding binding = DialogBinding.inflate(LayoutInflater.from(context));
-            binding.setDialog(dialog);
-            binding.setParams(P);
-            dialog.setView(binding.getRoot());
+            Window window = dialog.getWindow();
+            if (P.isDatePickerDialog()) {
+                DialogController.fillDatePicker(P); //充填未填寫之參數
+
+                DialogDatePickerBinding binding = DialogDatePickerBinding.inflate(LayoutInflater.from(context));
+                binding.setDialog(dialog);
+                binding.setParams(P);
+                dialog.setView(binding.getRoot());
+                window.setBackgroundDrawableResource(R.color.transparent);
+                window.setGravity(Gravity.BOTTOM);
+            } else {
+                DialogBinding binding = DialogBinding.inflate(LayoutInflater.from(context));
+                binding.setDialog(dialog);
+                binding.setParams(P);
+                dialog.setView(binding.getRoot());
+                window.setBackgroundDrawableResource(R.drawable.background);
+            }
             dialog.setCancelable(P.isCancelable());
             dialog.setCanceledOnTouchOutside(false);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.background);
             return dialog;
         }
 

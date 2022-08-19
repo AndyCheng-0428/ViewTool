@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="org.apache.commons.lang3.StringUtils" />
+
+        <import type="android.graphics.Typeface" />
+
+        <import type="android.view.View" />
+
+        <import type="com.machines0008.viewlibrary.ViewAdapter" />
+
+        <import type="android.content.DialogInterface" />
+
+        <variable
+            name="params"
+            type="com.machines0008.viewlibrary.ios.DialogController.Params" />
+
+        <variable
+            name="dialog"
+            type="com.machines0008.viewlibrary.ios.CommonDialog" />
+
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:weightSum="3">
+
+                <com.machines0008.viewlibrary.wheelview.WheelView
+                    android:id="@+id/year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:wheelItems="@{params.yearList}"
+                    android:layout_weight="1"/>
+
+                <com.machines0008.viewlibrary.wheelview.WheelView
+                    android:id="@+id/month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:wheelItems="@{params.monthList}"
+                    android:layout_weight="1"/>
+
+                <com.machines0008.viewlibrary.wheelview.WheelView
+                    android:id="@+id/day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:wheelItems="@{params.dayList}"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <View style="@style/Divider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_48dp"
+                android:foreground="@drawable/foreground"
+                android:gravity="center"
+                android:minHeight="@{params.btnLineMinHeight}"
+                android:onClick="@{v -> params.positiveBtnListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE) + dialog.dismiss()}"
+                android:text="@{params.positiveBtnText}"
+                android:textColor="@{params.positiveBtnTextColor}"
+                android:textSize="@{params.positiveTextSize}" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_48dp"
+            android:layout_marginTop="@{params.cancelBtnMarginTop}"
+            android:background="@drawable/background"
+            android:foreground="@drawable/foreground"
+            android:gravity="center"
+            android:minHeight="@{params.btnLineMinHeight}"
+            android:onClick="@{v -> dialog.dismiss() + params.negativeBtnListener.onClick(dialog, DialogInterface.BUTTON_NEGATIVE)}"
+            android:text="@{StringUtils.isBlank(params.negativeBtnText) ? @android:string/cancel : params.negativeBtnText}"
+            android:textColor="@{params.negativeBtnTextColor}"
+            android:textSize="@{params.negativeTextSize}" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
