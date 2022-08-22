@@ -37,32 +37,61 @@
             android:background="@drawable/background"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@{params.titleMarginTop}"
+                android:layout_marginBottom="@{params.titleMarginBottom}"
+                android:gravity="center_horizontal"
+                android:text="@{params.title}"
+                android:textColor="@{params.titleTextColor}"
+                android:textSize="@{params.titleTextSize}"
+                android:typeface="@{Typeface.DEFAULT_BOLD}"
+                android:visibility="@{StringUtils.isBlank(params.title) ? View.GONE : View.VISIBLE}" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:padding="15dp"
                 android:weightSum="3">
 
                 <com.machines0008.viewlibrary.wheelview.WheelView
                     android:id="@+id/year"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     app:wheelItems="@{params.yearList}"
-                    android:layout_weight="1"/>
+                    app:defaultItem="@{params.selectedYear}"/>
 
                 <com.machines0008.viewlibrary.wheelview.WheelView
                     android:id="@+id/month"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     app:wheelItems="@{params.monthList}"
-                    android:layout_weight="1"/>
+                    app:defaultItem="@{params.selectedMonth}"/>
 
                 <com.machines0008.viewlibrary.wheelview.WheelView
                     android:id="@+id/day"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     app:wheelItems="@{params.dayList}"
-                    android:layout_weight="1"/>
+                    app:defaultItem="@{params.selectedDay}"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvErrorMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@{params.errorMsgMarginTop}"
+                android:layout_marginBottom="@{params.errorMsgMarginBottom}"
+                android:afterTextChanged="@{s -> tvErrorMsg.setVisibility(StringUtils.isBlank(s) ? View.GONE : View.VISIBLE)}"
+                android:gravity="center_horizontal"
+                android:text="@={params.errorMsg}"
+                android:textColor="@{params.errorMsgTextColor}"
+                android:textSize="@{params.errorMsgTextSize}"
+                android:visibility="@{StringUtils.isBlank(params.errorMsg) ? View.GONE : View.VISIBLE}" />
 
             <View style="@style/Divider" />
 
@@ -72,7 +101,7 @@
                 android:foreground="@drawable/foreground"
                 android:gravity="center"
                 android:minHeight="@{params.btnLineMinHeight}"
-                android:onClick="@{v -> params.positiveBtnListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE) + dialog.dismiss()}"
+                android:onClick="@{v -> StringUtils.isBlank(params.errorMsg)? params.dateSelectedListener.onSelected(params.selectedYear.data, params.selectedMonth.data, params.selectedDay.data) + dialog.dismiss() : params.interruptedListener.onClick(dialog, DialogInterface.BUTTON_NEUTRAL)}"
                 android:text="@{params.positiveBtnText}"
                 android:textColor="@{params.positiveBtnTextColor}"
                 android:textSize="@{params.positiveTextSize}" />

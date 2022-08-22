@@ -3,6 +3,8 @@ package com.machines0008.viewlibrary.wheelview;
 import androidx.annotation.IntDef;
 import androidx.annotation.RestrictTo;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Getter;
 
 /**
@@ -29,8 +31,8 @@ public class DateBean implements WheelViewVo {
     public DateBean(@DateType int dateType, int data, String prefix, String suffix) {
         this.dateType = dateType;
         this.data = data;
-        this.prefix = prefix;
-        this.suffix = suffix;
+        this.prefix = StringUtils.defaultString(prefix);
+        this.suffix = StringUtils.defaultString(suffix);
     }
 
     @Override

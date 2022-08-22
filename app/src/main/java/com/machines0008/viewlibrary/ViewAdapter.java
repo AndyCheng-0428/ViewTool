@@ -59,4 +59,14 @@ public class ViewAdapter {
     public static <T extends WheelViewVo> void setWheelItems(WheelView<T> wheelView, List<T> wheelItems) {
         wheelView.setDataList(wheelItems, null);
     }
+
+    @BindingAdapter("app:defaultItem")
+    public static <T extends WheelViewVo> void setWheelDefaultItem(WheelView<T> wheelView, T defaultItem) {
+        wheelView.setSelectedItem(defaultItem);
+    }
+
+    @BindingAdapter("app:onSelect")
+    public static <T extends WheelViewVo> void setOnSelectListener(WheelView<T> wheelView, WheelView.OnSelectListener<T> listener) {
+        wheelView.setOnSelectListener(listener);
+    }
 }

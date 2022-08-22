@@ -57,10 +57,12 @@ public class WheelView<T extends WheelViewVo> extends View {
 
     private float moveDistance = 0;
     private boolean isInit = false;
+
     @Setter
     private boolean scrollEnable = true;
+
     @Setter
-    private OnSelectListener onSelectListener;
+    private OnSelectListener<T> onSelectListener;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -92,8 +94,9 @@ public class WheelView<T extends WheelViewVo> extends View {
         if (this.selectedIndex < 0 || size == 0) {
             return;
         }
+        this.selectedIndex = selectedIndex;
         if (isLoop) {
-            int indexGap = CollectionUtils.size(dataList) / 2 - this.selectedIndex;
+            int indexGap = CollectionUtils.size(dataList) / 2 - selectedIndex;
             if (indexGap < 0) {
                 for (int i = 0; i < -indexGap; i++) {
                     moveHeadToTail();
@@ -107,6 +110,15 @@ public class WheelView<T extends WheelViewVo> extends View {
             }
         }
         invalidate();
+    }
+
+    public void setSelectedItem(T item) {
+        for (int i = 0, size = CollectionUtils.size(dataList); i < size; i++) {
+            if (CollectionUtils.get(dataList, i) == item) {
+                setSelectedIndex(i);
+                break;
+            }
+        }
     }
 
     public void setDataList(List<T> dataList, T defaultItem) {
@@ -294,9 +306,9 @@ public class WheelView<T extends WheelViewVo> extends View {
     /**
      * 拋物線
      *
-     * @param zero       零點座標
+     * @param zero         零點座標
      * @param moveDistance 偏移量
-     * @return
+     * @return 結果
      */
     private float parabola(float zero, float moveDistance) {
         float f = (float) (1 - Math.pow(moveDistance / zero, 2));

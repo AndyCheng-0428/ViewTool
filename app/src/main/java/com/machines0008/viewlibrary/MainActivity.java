@@ -12,11 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.machines0008.viewlibrary.adbox.AdBoxView;
 import com.machines0008.viewlibrary.ios.CommonDialog;
+import com.machines0008.viewlibrary.ios.DialogController;
 import com.machines0008.viewlibrary.test.AdBoxBean;
 import com.machines0008.viewlibrary.test.WheelBean;
 import com.machines0008.viewlibrary.wheelview.WheelView;
 
+import org.apache.commons.lang3.time.CalendarUtils;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,17 +48,20 @@ public class MainActivity extends AppCompatActivity {
             wheelBeans.add(bean);
         }
         wheelView.setDataList(wheelBeans, null);
-
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(2023, 7, 01);
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2022, 7, 20);
         new CommonDialog.Builder(this)
                 .setTitle("你好啊")
-                .setMessage("這是測試待而露格!")
-                .setPositiveBtnClickListener(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                .setPositiveBtnClickListener(android.R.string.ok, (year, month, day) -> {
+                    Log.i(MainActivity.class.getSimpleName(), String.format("%04d/%02d/%02d", year, month, day));
                 }).isDatePickerDialog()
-
+                .setDatePickerConstraint(startTime, endTime, "超出選擇期限")
+                .setDayPrefix("第")
+                .setDaySuffix("日")
+                .setYearPrefix("西元")
+                .setYearSuffix("年")
                 .build()
                 .show();
     }
