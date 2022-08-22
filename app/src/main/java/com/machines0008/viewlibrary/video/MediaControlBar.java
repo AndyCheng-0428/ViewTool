@@ -2,6 +2,8 @@ package com.machines0008.viewlibrary.video;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import lombok.Setter;
 
 /**
  * Project Name: ViewLibrary
@@ -27,16 +31,19 @@ public class MediaControlBar extends LinearLayout {
     private TextView tvMediaTime;
     private LinearLayout linearLayout;
 
+
     public MediaControlBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         setOrientation(VERTICAL);
+        setGravity(Gravity.CENTER_VERTICAL);
         initChild(context, attrs);
         fillView();
     }
 
     private void fillView() {
         addView(sbMediaProgress);
+
         linearLayout.addView(btnPlay);
         linearLayout.addView(btnNext);
         linearLayout.addView(btnVoice);
@@ -57,9 +64,14 @@ public class MediaControlBar extends LinearLayout {
         btnVoice = new ImageView(context, attrs);
         btnVoice.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         sbVoice = new SeekBar(context, attrs);
-        sbVoice.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        LayoutParams lpVoice = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lpVoice.gravity = Gravity.CENTER_VERTICAL;
+        lpVoice.width = ((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getContext().getResources().getDisplayMetrics()));
+        sbVoice.setLayoutParams(lpVoice);
         tvMediaTime = new TextView(context, attrs);
-        tvMediaTime.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        LayoutParams lpMediaTime = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lpMediaTime.gravity = Gravity.CENTER_VERTICAL;
+        tvMediaTime.setLayoutParams(lpMediaTime);
         btnPlay.setImageResource(android.R.drawable.ic_media_play);
         btnNext.setImageResource(android.R.drawable.ic_media_next);
         btnVoice.setImageResource(android.R.drawable.ic_lock_silent_mode_off);

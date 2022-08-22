@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Guideline;
 
 /**
@@ -25,9 +26,6 @@ public class VideoLayout extends ConstraintLayout {
         LayoutParams guildParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         guildParams.orientation = LayoutParams.HORIZONTAL;
         gl90.setLayoutParams(guildParams);
-        gl90.setGuidelinePercent(0.90f);
-
-
         VideoView videoView = new VideoView(context, attrs);
         LayoutParams videoParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         videoParams.bottomToBottom = LayoutParams.PARENT_ID;
@@ -36,13 +34,11 @@ public class VideoLayout extends ConstraintLayout {
         videoParams.endToEnd = LayoutParams.PARENT_ID;
         videoView.setLayoutParams(videoParams);
         MediaControlBar mediaControlBar = new MediaControlBar(context, attrs);
-        LayoutParams mediaControlBarParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        mediaControlBarParams.topToTop = gl90.getId();
-        mediaControlBarParams.bottomToBottom = LayoutParams.PARENT_ID;
-        mediaControlBarParams.startToStart = LayoutParams.PARENT_ID;
-        mediaControlBarParams.endToEnd = LayoutParams.PARENT_ID;
+        ConstraintLayout.LayoutParams mediaControlBarParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mediaControlBarParams.bottomToBottom = ConstraintSet.PARENT_ID;
+        mediaControlBarParams.startToStart = ConstraintSet.PARENT_ID;
+        mediaControlBarParams.endToEnd = ConstraintSet.PARENT_ID;
         mediaControlBar.setLayoutParams(mediaControlBarParams);
-        addView(gl90);
         addView(videoView);
         addView(mediaControlBar);
     }

@@ -1,7 +1,6 @@
 package com.machines0008.viewlibrary.video;
 
 import android.graphics.SurfaceTexture;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.opengl.GLES11Ext;
@@ -91,7 +90,9 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setLooping(true);
         mediaPlayer.setOnVideoSizeChangedListener(this);
-        mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
+        mediaPlayer.setOnPreparedListener(mp -> {
+            mediaPlayer.start();
+        });
         mediaPlayer.setSurface(surface);
         mediaPlayer.prepareAsync();
     }
