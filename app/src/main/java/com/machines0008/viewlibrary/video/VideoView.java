@@ -23,6 +23,10 @@ public class VideoView extends GLSurfaceView implements GLSurfaceView.Renderer {
         renderer = new VideoRenderer();
     }
 
+    public IVideoMessage getService() {
+        return renderer.getMessage();
+    }
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         renderer.onSurfaceCreated(gl, config);
@@ -37,5 +41,21 @@ public class VideoView extends GLSurfaceView implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         renderer.onDrawFrame(gl);
+    }
+
+    public void switchPlay() {
+        renderer.switchPlay();
+    }
+
+    public void setVolume(float volume) {
+        renderer.setVolume(volume);
+    }
+
+    public void seekTo(int seekToPosition) {
+        renderer.seekTo(seekToPosition);
+    }
+
+    public void setCallback(MediaCallback callback) {
+        renderer.setCallback(callback);
     }
 }

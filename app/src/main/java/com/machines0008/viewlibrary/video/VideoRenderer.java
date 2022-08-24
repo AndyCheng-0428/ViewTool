@@ -7,6 +7,8 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.Surface;
 
 import com.machines0008.viewlibrary.gl.utils.GLES20Utils;
@@ -16,6 +18,9 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Project Name: ViewLibrary
@@ -41,7 +46,6 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
             "void main() {" +
             "   gl_FragColor = texture2D(vTexture, textureCoordinate);" +
             "}";
-
     private FloatBuffer fbVertex;
     private FloatBuffer fbTexture;
     private final float[] vertexPosition = {
@@ -56,7 +60,8 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
             0.0f, 0.0f,
             1.0f, 0.0f
     };
-
+    private Handler handler;
+    private HandlerThread handlerThread;
     private int screenWidth;
     private int screenHeight;
     private final float[] matrix = new float[16];
@@ -65,6 +70,40 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
     private MediaPlayer mediaPlayer;
     private VideoBean videoBean = new VideoBean();
     private SurfaceTexture surfaceTexture;
+    @Setter
+    private MediaCallback callback;
+
+    @Getter
+    private IVideoMessage message = new IVideoMessage() {
+        @Override
+        public boolean isPlaying() {
+            if (null == mediaPlayer) {
+                return false;
+            }
+            return mediaPlayer.isPlaying();
+        }
+
+        @Override
+        public boolean isPause() {
+            if (null == mediaPlayer) {
+                return true;
+            }
+            return !mediaPlayer.isPlaying();
+        }
+
+        @Override
+        public int progress() {
+            if (null == mediaPlayer) {
+                return 0;
+            }
+            return mediaPlayer.getCurrentPosition();
+        }
+
+        @Override
+        public int duration() {
+            return mediaPlayer.getDuration();
+        }
+    };
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -85,13 +124,18 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
     }
 
     private void initMediaPlayer(Surface surface) throws IOException {
+        handlerThread = new HandlerThread(VideoRenderer.class.getSimpleName());
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setDataSource(videoBean.getUrl());
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setLooping(true);
         mediaPlayer.setOnVideoSizeChangedListener(this);
         mediaPlayer.setOnPreparedListener(mp -> {
-            mediaPlayer.start();
+            if (null != callback) {
+                callback.callback(message, VideoConstant.VIDEO_PREPARED);
+            }
         });
         mediaPlayer.setSurface(surface);
         mediaPlayer.prepareAsync();
@@ -129,6 +173,9 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
         GLES20.glDisableVertexAttribArray(mHPosition);
         GLES20.glDisableVertexAttribArray(mHCoord);
         GLES20.glDeleteTextures(1, texture, 0);
+        if (null != callback) {
+            handler.post(() -> callback.callback(message, VideoConstant.VIDEO_FRAME_UPDATE));
+        }
     }
 
     @Override
@@ -146,5 +193,25 @@ public class VideoRenderer implements GLSurfaceView.Renderer, MediaPlayer.OnVide
         }
         Matrix.rotateM(matrix, 0, 180, 0, 0, 1); //上下顛倒
         Matrix.scaleM(matrix, 0, -1, 1, 1); //水平反轉
+    }
+
+    public void switchPlay() {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+        } else {
+            mediaPlayer.start();
+        }
+        //設定完開始播放或暫停播放後，以更新後的狀態讓Callback回調確認媒體撥放器目前狀態
+        if (null != callback) {
+            callback.callback(message, mediaPlayer.isPlaying() ? VideoConstant.VIDEO_PLAY : VideoConstant.VIDEO_PAUSE);
+        }
+    }
+
+    public void setVolume(float volume) {
+        mediaPlayer.setVolume(volume, volume);
+    }
+
+    public void seekTo(int seekPosition) {
+        mediaPlayer.seekTo(seekPosition);
     }
 }
