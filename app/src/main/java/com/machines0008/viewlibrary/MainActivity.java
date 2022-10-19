@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.machines0008.viewlibrary.adbox.AdBoxView;
+import com.machines0008.viewlibrary.barcodescanner.CameraPreview;
 import com.machines0008.viewlibrary.ios.CommonDialog;
 import com.machines0008.viewlibrary.ios.DialogController;
 import com.machines0008.viewlibrary.test.AdBoxBean;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private AdBoxView<AdBoxBean> adBox;
-
+    CameraPreview cameraPreview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         setContentView(R.layout.activity_main);
+        cameraPreview = findViewById(R.id.a);
+
         initView();
         initWheel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cameraPreview.resume();
     }
 
     private void initWheel() {
