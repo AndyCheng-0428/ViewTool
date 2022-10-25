@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="org.apache.commons.lang3.StringUtils" />
+
+        <import type="android.graphics.Typeface" />
+
+        <import type="android.view.View" />
+
+        <import type="com.machines0008.viewlibrary.ViewAdapter" />
+
+        <import type="android.content.DialogInterface" />
+
+        <variable
+            name="params"
+            type="com.machines0008.viewlibrary.ios.DialogController.Params" />
+
+        <variable
+            name="dialog"
+            type="com.machines0008.viewlibrary.ios.CommonDialog" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@{params.titleMarginTop}"
+            android:layout_marginBottom="@{params.titleMarginBottom}"
+            android:gravity="center_horizontal"
+            android:text="@{params.title}"
+            android:textColor="@{params.titleTextColor}"
+            android:textSize="@{params.titleTextSize}"
+            android:typeface="@{Typeface.DEFAULT_BOLD}"
+            android:visibility="@{StringUtils.isBlank(params.title) ? View.GONE : View.VISIBLE}" />
+
+        <com.machines0008.viewlibrary.formview.FormView
+            android:id="@+id/formView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/tvErrorMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@{params.errorMsgMarginTop}"
+            android:layout_marginBottom="@{params.errorMsgMarginBottom}"
+            android:afterTextChanged="@{s -> tvErrorMsg.setVisibility(StringUtils.isBlank(s) ? View.GONE : View.VISIBLE)}"
+            android:gravity="center_horizontal"
+            android:text="@={params.errorMsg}"
+            android:textColor="@{params.errorMsgTextColor}"
+            android:textSize="@{params.errorMsgTextSize}"
+            android:visibility="@{StringUtils.isBlank(params.errorMsg) ? View.GONE : View.VISIBLE}" />
+
+        <View style="@style/Divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@{params.btnLineMinHeight}"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:foreground="@drawable/foreground"
+                android:gravity="center"
+                android:onClick="@{v -> dialog.dismiss() + params.negativeBtnListener.onClick(dialog, DialogInterface.BUTTON_NEGATIVE)}"
+                android:text="@{params.negativeBtnText}"
+                android:textColor="@{params.negativeBtnTextColor}"
+                android:textSize="@{params.negativeTextSize}"
+                android:visibility="@{StringUtils.isBlank(params.negativeBtnText) ? View.GONE : View.VISIBLE}" />
+
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="@dimen/dimen_48dp"
+                android:background="@color/gray"
+                android:visibility="@{StringUtils.isBlank(params.negativeBtnText) ? View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:id="@+id/tvPositive"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:foreground="@drawable/foreground"
+                android:gravity="center"
+                android:onClick="@{v -> params.setError(params.formViewAdapter.checkAllRule()) + (StringUtils.isBlank(params.errorMsg) ? params.positiveBtnListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE) + dialog.dismiss() : params.interruptedListener.onClick(dialog, DialogInterface.BUTTON_NEUTRAL))}"
+                android:text="@{params.positiveBtnText}"
+                android:textColor="@{params.positiveBtnTextColor}"
+                android:textSize="@{params.positiveTextSize}"
+                android:visibility="@{StringUtils.isBlank(params.positiveBtnText) ? View.GONE : View.VISIBLE}" />
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

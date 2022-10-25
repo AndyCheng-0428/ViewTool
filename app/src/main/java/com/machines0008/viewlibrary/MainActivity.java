@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 //        list.add(ad2);
 
 
-        adBox.setContent(list);
-        adBox.setOnItemClickListener((v, adBoxVo) -> Log.i("MainActivity", "inner type" + adBoxVo.getType()));
+//        adBox.setContent(list);
+//        adBox.setOnItemClickListener((v, adBoxVo) -> Log.i("MainActivity", "inner type" + adBoxVo.getType()));
     }
 }

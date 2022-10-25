@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.library'
 }
+def versionMajor = 1
+def versionMinor = 0
+def versionCode = 2
 
 android {
     compileSdk 31
@@ -8,8 +11,8 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        versionCode ${versionCode}
+        versionName "${versionMajor}.${versionMinor}.${versionCode}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

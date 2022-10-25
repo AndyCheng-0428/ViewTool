@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ViewLibrary</string>
+    <string name="common_required">必填</string>
 </resources>

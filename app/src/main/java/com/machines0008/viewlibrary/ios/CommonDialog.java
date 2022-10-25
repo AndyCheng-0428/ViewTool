@@ -1,8 +1,10 @@
 package com.machines0008.viewlibrary.ios;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Window;
@@ -14,8 +16,12 @@ import androidx.annotation.StringRes;
 import com.machines0008.viewlibrary.R;
 import com.machines0008.viewlibrary.databinding.DialogBinding;
 import com.machines0008.viewlibrary.databinding.DialogDatePickerBinding;
+import com.machines0008.viewlibrary.databinding.DialogItemBinding;
+import com.machines0008.viewlibrary.formview.FormViewAdapter;
+import com.machines0008.viewlibrary.formview.ItemView;
 import com.machines0008.viewlibrary.wheelview.DateBean;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -206,6 +212,18 @@ public class CommonDialog extends AlertDialog {
             return this;
         }
 
+        public Builder addEditorItem(@NonNull ItemView itemView) {
+            if (null == itemView) {
+                return this;
+            }
+            if (P.getItemViewList() == null) {
+                P.setItemViewList(new ArrayList<>());
+                P.setItemViewDialog(true);
+            }
+            P.getItemViewList().add(itemView);
+            return this;
+        }
+
         public Builder isDatePickerDialog() {
             P.setDatePickerDialog(true);
             return this;
@@ -274,6 +292,18 @@ public class CommonDialog extends AlertDialog {
                 dialog.setView(binding.getRoot());
                 window.setBackgroundDrawableResource(R.color.transparent);
                 window.setGravity(Gravity.BOTTOM);
+            } else if (P.isItemViewDialog()) {
+                DialogItemBinding binding = DialogItemBinding.inflate(LayoutInflater.from(context));
+                FormViewAdapter fvAdapter = new FormViewAdapter();
+                for (ItemView itemView : P.getItemViewList()) {
+                    fvAdapter.add(itemView);
+                }
+                P.setFormViewAdapter(fvAdapter);
+                binding.formView.setAdapter(fvAdapter);
+                binding.setDialog(dialog);
+                binding.setParams(P);
+                dialog.setView(binding.getRoot());
+                window.setBackgroundDrawableResource(R.drawable.background);
             } else {
                 DialogBinding binding = DialogBinding.inflate(LayoutInflater.from(context));
                 binding.setDialog(dialog);
@@ -291,11 +321,12 @@ public class CommonDialog extends AlertDialog {
          * 1. 若日期本身不符合西元曆法，則回傳1
          * 2. 若日期不符合使用者自定義之開始及結束時間，則回傳2
          * 3. 若日期符合上述兩者，則回傳0 表示成功
-         * @param year 年被選項
-         * @param month 月被選項
-         * @param day 日被選項
+         *
+         * @param year      年被選項
+         * @param month     月被選項
+         * @param day       日被選項
          * @param startTime 使用者自定義開始時間
-         * @param endTime 使用者自定義結束時間
+         * @param endTime   使用者自定義結束時間
          * @return 日期檢查結果
          */
         public int checkDate(DateBean year, DateBean month, DateBean day, Calendar startTime, Calendar endTime) {

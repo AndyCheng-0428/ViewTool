@@ -5,4 +5,10 @@
         <item name="android:layout_height">0.1dp</item>
         <item name="android:background">@color/gray</item>
     </style>
+    <style name="EditTextStyle" >
+        <item name="android:background">@drawable/edit_text</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

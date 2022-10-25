@@ -3,9 +3,12 @@ package com.machines0008.viewlibrary.ios;
 import android.content.DialogInterface;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 
 import com.machines0008.viewlibrary.R;
+import com.machines0008.viewlibrary.formview.FormViewAdapter;
+import com.machines0008.viewlibrary.formview.ItemView;
 import com.machines0008.viewlibrary.wheelview.DateBean;
 
 import java.util.ArrayList;
@@ -132,6 +135,8 @@ public class DialogController {
 
         //DatePicker
         private boolean isDatePickerDialog;
+        //ItemViewDialog
+        private boolean isItemViewDialog;
         private int datePickerHeight = 250;
         private int cancelBtnMarginTop = 16;
         private Calendar startTime; //若為DatePickerDialog且使用者未定義初始時間才賦預設值 1900/01/01
@@ -157,13 +162,20 @@ public class DialogController {
 
         private float errorMsgTextSize = 16f;
         private int errorMsgMarginTop = 0;
-        private int errorMsgMarginBottom = 24;
+        private int errorMsgMarginBottom = 4;
 
         @ColorRes
         private int errorMsgTextColor = R.color.light_red;
         private OnDateSelectedListener dateSelectedListener;
 
         private DialogInterface.OnClickListener interruptedListener; //此監聽器做為中斷監聽器，其值恆為null，作為DataBinding需阻斷過程方法執行之監聽器
+
+        private ArrayList<ItemView> itemViewList;
+        private FormViewAdapter formViewAdapter;
+
+        public void setError(CharSequence error) {
+            this.errorMsg.set(error);
+        }
     }
 
     public interface OnDateSelectedListener {
