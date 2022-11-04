@@ -5,6 +5,9 @@ import androidx.annotation.RestrictTo;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import lombok.Getter;
 
 /**
@@ -40,7 +43,7 @@ public class DateBean implements WheelViewVo {
         return String.format("%s%02d%s", prefix, data, suffix);
     }
 
-
+    @Retention(RetentionPolicy.SOURCE)
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     @IntDef({FORMAT_YEAR, FORMAT_MONTH, FORMAT_DAY})
     public @interface DateType {

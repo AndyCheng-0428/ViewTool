@@ -1,6 +1,7 @@
 package com.machines0008.viewlibrary.ios;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -9,6 +10,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.ObservableField;
 
+import com.machines0008.viewlibrary.R;
 import com.machines0008.viewlibrary.databinding.DialogProgressBinding;
 
 import lombok.Data;
@@ -22,16 +24,18 @@ import lombok.Data;
 public class ProgressDialog extends AlertDialog {
     private View baseView;
     private Params params;
+
     @Override
     public void show() {
         Window win = getWindow();
         super.show();
         WindowManager.LayoutParams lp = win.getAttributes();
         win.setContentView(baseView);
-        if (null != lp) {
-            lp.width = 320;
-            lp.height = 320;
+        if (lp != null) {
+            lp.height = params.dialogHeight;
+            lp.width = params.dialogWidth;
         }
+        win.setBackgroundDrawableResource(R.drawable.background);
         win.setAttributes(lp);
     }
 
@@ -39,6 +43,7 @@ public class ProgressDialog extends AlertDialog {
         super(context);
         setCancelable(false);
     }
+
     public void setMessage(CharSequence msg) {
         if (null == params) {
             return;
@@ -88,6 +93,8 @@ public class ProgressDialog extends AlertDialog {
 
     @Data
     public static class Params {
+        private int dialogHeight = 350;
+        private int dialogWidth = 350;
         private ObservableField<CharSequence> message = new ObservableField<>("請稍後");
         private ObservableField<CharSequence> cancelText = new ObservableField<>();
         private View.OnClickListener cancelListener;

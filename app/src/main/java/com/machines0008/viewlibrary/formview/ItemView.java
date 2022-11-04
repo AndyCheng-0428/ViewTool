@@ -34,8 +34,6 @@ public abstract class ItemView {
         return clickable;
     }
 
-    protected abstract int getLayoutId();
-
     public void addCheckRuleListener(CheckRuleListener checkRuleListener) {
         checkRuleListenerList.add(checkRuleListener);
     }

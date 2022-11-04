@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
-import com.machines0008.viewlibrary.R;
 import com.machines0008.viewlibrary.databinding.ItemEditTextBinding;
 import com.machines0008.viewlibrary.formview.ItemView;
 
@@ -30,11 +29,6 @@ public class EditTextItem extends ItemView {
         etb = new EditTextBean();
         binding.setEditTextItem(etb);
         return binding.getRoot();
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.item_edit_text;
     }
 
     @Override

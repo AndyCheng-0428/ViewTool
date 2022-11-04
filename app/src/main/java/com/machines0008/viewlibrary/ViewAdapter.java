@@ -48,6 +48,35 @@ public class ViewAdapter {
         textView.setTextColor(textView.getContext().getColor(colorRes));
     }
 
+    @BindingAdapter(value = {"android:layout_height", "heightDimension"})
+    public static void setLayoutHeight(View view, int layoutHeight, int heightDimension) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (heightDimension == TypedValue.COMPLEX_UNIT_PX) {
+            layoutParams.height = layoutHeight;
+        } else if (heightDimension == TypedValue.COMPLEX_UNIT_DIP) {
+            layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, layoutHeight, view.getContext().getResources().getDisplayMetrics());
+        }
+        view.setLayoutParams(layoutParams);
+    }
+
+    @BindingAdapter(value = {"android:layout_width", "widthDimension"})
+    public static void setLayoutWidth(View view, int layoutWidth, int widthDimension) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (widthDimension == TypedValue.COMPLEX_UNIT_PX) {
+            layoutParams.width = layoutWidth;
+        } else if (widthDimension == TypedValue.COMPLEX_UNIT_DIP) {
+            layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, layoutWidth, view.getContext().getResources().getDisplayMetrics());
+        }
+        view.setLayoutParams(layoutParams);
+    }
+
+    @BindingAdapter("android:layout_width")
+    public static void setLayoutWidth(View view, int layoutWidth) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, layoutWidth, view.getContext().getResources().getDisplayMetrics());
+        view.setLayoutParams(layoutParams);
+    }
+
     @BindingAdapter("android:layout_height")
     public static void setLayoutHeight(View view, int layoutHeight) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
