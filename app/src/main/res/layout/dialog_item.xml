@@ -66,7 +66,7 @@
 
         <View style="@style/Divider" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:textColor="@{params.positiveBtnTextColor}"
                 android:textSize="@{params.positiveTextSize}"
                 android:visibility="@{StringUtils.isBlank(params.positiveBtnText) ? View.GONE : View.VISIBLE}" />
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

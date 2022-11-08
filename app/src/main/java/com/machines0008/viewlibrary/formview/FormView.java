@@ -5,7 +5,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-public class FormView extends LinearLayout {
+import androidx.appcompat.widget.LinearLayoutCompat;
+
+public class FormView extends LinearLayoutCompat {
     private FormView.OnItemClickListener onItemClickListener;
     private FormViewAdapter adapter;
 

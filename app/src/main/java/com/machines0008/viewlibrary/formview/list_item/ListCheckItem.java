@@ -7,6 +7,8 @@ package com.machines0008.viewlibrary.formview.list_item;
  * Usage:
  **/
 public interface ListCheckItem {
+    int getViewType();
+
     boolean isChecked();
 
     void setChecked(boolean checked);

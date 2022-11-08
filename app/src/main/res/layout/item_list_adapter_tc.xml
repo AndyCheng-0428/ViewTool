@@ -3,37 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
-            name="listItem"
-            type="com.machines0008.viewlibrary.formview.list_item.ListItemBean" />
-        <variable
-            name="adapter"
-            type="com.machines0008.viewlibrary.formview.list_item.ListCheckItemAdapter" />
+            name="itemVo"
+            type="com.machines0008.viewlibrary.formview.list_item.ListCheckItem" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentPadding="4dp">
+        android:layout_marginBottom="4dp"
+        app:contentPadding="8dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{listItem.title}"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:layout_gravity="center_vertical"
+                android:text="@{itemVo.subItemName}" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
+            <CheckBox
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:adapter="@{adapter}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_gravity="center_vertical"
+                android:checked="@{itemVo.checked}"
+                android:onCheckedChanged="@{(v, checked)->itemVo.setChecked(checked)}"
+                android:text="@{itemVo.itemName}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.cardview.widget.CardView>
